@@ -26,13 +26,15 @@ def get_recommendation_from_record(user_id: str =Query(...) , db: Session = Depe
     try:
         for i in range(7):
             for list_recommendation in recommendations:
-                video = list_recommendation[i]
+                try:
+                    video = list_recommendation[i]
+                    if len(final_recommendations) > 20:
+                        break
 
-                if len(final_recommendations) > 20:
-                    break
-
-                if (str(video) not in videos_record) and (video not in final_recommendations):
-                    final_recommendations.append(video)
+                    if (str(video) not in videos_record) and (video not in final_recommendations):
+                        final_recommendations.append(video)
+                except:
+                    pass
     except:
         print("Não há vídeos recomendados suficientes!")
         return {"recommend_videos": final_recommendations}
