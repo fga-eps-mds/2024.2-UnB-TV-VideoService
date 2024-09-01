@@ -21,9 +21,8 @@ def get_recommendation_from_record(user_id: str =Query(...) , db: Session = Depe
     # Gera lista de recomendações para cada vídeo no histórico
     for video in videos_record:
         videos_recommend = get_recommendations(int(video))
-        if videos_recommend == 0:
-            continue
-        recommendations.append(videos_recommend)
+        if videos_recommend:  # Apenas adiciona recomendações se a lista não estiver vazia
+            recommendations.append(videos_recommend)
 
     try:
         for i in range(7):
