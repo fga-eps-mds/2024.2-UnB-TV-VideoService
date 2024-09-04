@@ -109,3 +109,27 @@ def test_get_record_sorted(setup_database):
     expected_order = sorted(videos.items(), key=lambda x: x[1], reverse=True)
     sorted_keys = list(sorted_videos.keys())
     assert sorted_keys == [k for k, v in expected_order]  # Checa se está em ordem descendente
+
+def test_delete_video_from_record(setup_database):
+    user_id = str(uuid.uuid4())
+    video_id = str(uuid.uuid4())
+    timestamp = "2024-08-14 12:00:00"
+
+    # Adiciona o vídeo ao histórico
+    response = client.post("/api/record/", json={"user_id": user_id, "videos": {video_id: timestamp}})
+    assert response.status_code == 200
+
+    # Verifica se o vídeo foi adicionado ao histórico
+    response = client.get("/api/record/get_record/", params={"user_id": user_id})
+    assert response.status_code == 200
+    assert video_id in response.json()["videos"]
+
+    # Exclui o vídeo do histórico
+    response = client.delete("/api/record/delete_video", params={"user_id": user_id, "video_id": video_id})
+    assert response.status_code == 200
+    assert response.json()["message"] == "Vídeo removido do histórico com sucesso."
+
+    # Verifica se o vídeo foi removido do histórico
+    response = client.get("/api/record/get_record/", params={"user_id": user_id})
+    assert response.status_code == 200
+    assert video_id not in response.json()["videos"]
