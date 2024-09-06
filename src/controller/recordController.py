@@ -88,3 +88,29 @@ def get_record_sorted(user_id: str = Query(...), ascending: bool = Query(True), 
         sorted_videos = dict(sorted(aggregated_videos.items(), key=lambda item: item[1], reverse=not ascending))
         return {"videos": sorted_videos}
     return {"videos": []}
+
+@Record.delete("/delete_video")
+def delete_video_from_record(video_id: str = Query(...), user_id: str = Query(...), db: Session = Depends(get_db)):
+    record_entry = db.query(recordModel.Record).filter(recordModel.Record.user_id == user_id).first()
+   
+    if record_entry:
+        video_id = str(video_id)  # video_id como uma string
+
+        print(f"Histórico antes da exclusão: {record_entry.videos}")
+       
+        if video_id in record_entry.videos:
+            print(f"Removendo vídeo {video_id} do histórico.")
+           
+            # cria um novo dicionario sem o video a ser removido
+            updated_videos = {k: v for k, v in record_entry.videos.items() if k != video_id}
+            record_entry.videos = updated_videos  # atualiza o dicionário de videos
+           
+            db.commit()
+            print(f"Histórico após a exclusão: {record_entry.videos}")
+            return JSONResponse(status_code=200, content={"message": "Vídeo removido do histórico com sucesso."})
+        else:
+            print(f"Vídeo {video_id} não encontrado no histórico.")
+            return JSONResponse(status_code=404, content={"message": "Vídeo não encontrado no histórico."})
+    else:
+        print(f"Registro de histórico para o usuário {user_id} não encontrado.")
+        return JSONResponse(status_code=404, content={"message": "Registro de histórico não encontrado."})
