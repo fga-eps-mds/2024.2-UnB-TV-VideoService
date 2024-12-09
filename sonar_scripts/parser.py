@@ -12,7 +12,7 @@ load_dotenv()
 
 # Variáveis globais ao repositório
 OWNER = "fga-eps-mds"
-REPO = "2024.1-UnB-TV-VideoService"
+REPO = "2024.2-UnB-TV-VideoService"
 TODAY = datetime.now()
 
 # Configurar as variáveis de ambiente
@@ -88,14 +88,14 @@ def create_release():
 
 if __name__ == '__main__':
 
-    REPO = "2024.1-UnB-TV-VideoService"
+    REPO = "2024.2-UnB-TV-VideoService"
 
     _, tag = create_release()
 
     response = requests.get(f'{BASE_URL}{REPO}&metricKeys={",".join(METRICS_SONAR)}&ps=500')
     j = json.loads(response.text)
 
-    file_path = f'./analytics-raw-data/fga-eps-mds-2024-1-UnBTV-VideoService-{TODAY.strftime("%m-%d-%Y-%H-%M-%S")}-{tag}.json'
+    file_path = f'./analytics-raw-data/fga-eps-mds-2024-2-UnBTV-VideoService-{TODAY.strftime("%m-%d-%Y-%H-%M-%S")}-{tag}.json'
 
     with open(file_path, 'w') as fp:
         fp.write(json.dumps(j))
