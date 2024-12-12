@@ -5,12 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from database import init_db  # Adicione a função de inicialização do banco de dados
 
 
-
 load_dotenv()
 
 from controller import commentController, scheduleController, savedVideosController, recordController, recommendationController
 from controller.savedVideosController import WatchLater
-
+from controller.fileUploadController import router as FileUpload
 
 # Desativado os os comentarios nos videos
 # from database import SessionLocal, engine
@@ -40,6 +39,7 @@ app.include_router(prefix="/api", router=scheduleController.schedule)
 app.include_router(prefix="/api", router=savedVideosController.favorite)
 app.include_router(prefix="/api", router=recordController.Record)
 app.include_router(prefix="/api", router=recommendationController.Recommendation)
+app.include_router(FileUpload, prefix="/api")
 
 @app.get("/")
 async def root():
