@@ -2,13 +2,15 @@ from sqlalchemy.orm import Session
 from domain import fileSchema
 from model import fileModel
 from fastapi import HTTPException
+from datetime import datetime
 
-def create_file(db: Session, file: fileSchema.FileUploadCreate):
+def create_file(file: fileSchema.FileUploadCreate, db: Session):
     # Cria um novo arquivo no banco de dados
     db_file = fileModel.FileUpload(
-        filename=file.filename.strip(),
-        content=file.content.strip(),
-        uploaded_at= datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")  # Aqui você pode usar o datetime para salvar a data atual
+        filename=filename,  # Nome do arquivo
+        content_type=content_type,  # Tipo MIME do arquivo
+        content=content,  # Conteúdo do arquivo
+        uploaded_at=datetime.utcnow(),  # Horário do upload
     )
     db.add(db_file)
     db.commit()

@@ -9,13 +9,16 @@ load_dotenv()
 
 from controller import commentController, scheduleController, savedVideosController, recordController, recommendationController
 from controller.savedVideosController import WatchLater
-from controller.fileUploadController import router as FileUpload
+from controller.fileUploadController import FileUpload
 
 # Desativado os os comentarios nos videos
 # from database import SessionLocal, engine
 # from model import commentModel
 
 # commentModel.Base.metadata.create_all(bind=engine)
+
+class Base(BaseModel):
+    user: str
 
 app = FastAPI()
 

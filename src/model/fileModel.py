@@ -7,5 +7,6 @@ class FileUpload(Base):
 
     id = Column(String, primary_key=True, index=True, default=lambda: str(uuid.uuid4()))  # UUID como ID
     filename = Column(String, nullable=False)
+    content_type = Column(String, nullable=False)  # Tipo MIME
     content = Column(Text, nullable=False) # Para armazenar o conteúdo do arquivo .txt
     uploaded_at = Column(String, nullable=False)  # Usar DateTime (?)

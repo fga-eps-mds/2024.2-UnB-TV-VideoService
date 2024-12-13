@@ -2,7 +2,9 @@ from pydantic import BaseModel
 
 class FileUploadBase(BaseModel):
     filename: str  # Nome do arquivo
-    content: str   # Conteúdo do arquivo de transcrição
+    content_type: str 
+    content: bytes  # Conteúdo do arquivo de transcrição
+
 
 class FileUploadCreate(FileUploadBase):
     pass
