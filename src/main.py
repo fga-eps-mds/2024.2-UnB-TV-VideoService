@@ -9,7 +9,7 @@ load_dotenv()
 
 from controller import commentController, scheduleController, savedVideosController, recordController, recommendationController
 from controller.savedVideosController import WatchLater
-from controller.fileUploadController import FileUpload
+from controller.fileController import File
 
 # Desativado os os comentarios nos videos
 # from database import SessionLocal, engine
@@ -42,7 +42,7 @@ app.include_router(prefix="/api", router=scheduleController.schedule)
 app.include_router(prefix="/api", router=savedVideosController.favorite)
 app.include_router(prefix="/api", router=recordController.Record)
 app.include_router(prefix="/api", router=recommendationController.Recommendation)
-app.include_router(FileUpload, prefix="/api")
+app.include_router(File, prefix="/api")
 
 @app.get("/")
 async def root():

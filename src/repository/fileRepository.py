@@ -4,13 +4,13 @@ from model import fileModel
 from fastapi import HTTPException
 from datetime import datetime
 
-def create_file(file: fileSchema.FileUploadCreate, db: Session):
+def create_file(db: Session, filename, content_type, content, uploaded_at):
     # Cria um novo arquivo no banco de dados
-    db_file = fileModel.FileUpload(
+    db_file = fileModel.File(
         filename=filename,  # Nome do arquivo
         content_type=content_type,  # Tipo MIME do arquivo
         content=content,  # Conteúdo do arquivo
-        uploaded_at=datetime.utcnow(),  # Horário do upload
+        uploaded_at=datetime.today(),  # Horário do upload
     )
     db.add(db_file)
     db.commit()

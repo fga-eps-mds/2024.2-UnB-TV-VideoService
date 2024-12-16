@@ -1,25 +1,18 @@
-from typing import Optional
-from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
+from fastapi import  UploadFile, File, HTTPException, Depends, FastAPI
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
-from domain import fileSchema
 from database import get_db
 from repository import fileRepository
 from starlette.responses import JSONResponse, StreamingResponse
 from io import BytesIO
 from datetime import datetime
+from typing import Optional
 
-FileUpload = APIRouter(
-    prefix="/file-upload"
-)
+File = FastAPI()
 
-@FileUpload.post("/")
-async def upload_file(
-    file: UploadFile = File(...), 
-    db: Session = Depends(get_db)
-    ):
+@File.post("/file-upload")
+async def upload_file(file: UploadFile = File(...), db: Session = Depends(get_db)):
     # Endpoint para fazer upload de um arquivo.
-
     try:
         content = await file.read()
         with open(file.filename, 'wb') as f:
@@ -42,8 +35,7 @@ async def upload_file(
     finally:
         file.file.close()
 
-
-@FileUpload.get("/{file_id}")
+@File.get("/{file_id}")
 def get_file(file_id: str, db: Session = Depends(get_db)):
     # Endpoint para obter um arquivo pelo ID
     try:
@@ -59,7 +51,7 @@ def get_file(file_id: str, db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Erro ao recuperar o arquivo: {str(e)}")
 
-@FileUpload.delete("/{file_id}")
+@File.delete("/{file_id}")
 def delete_file(file_id: str, db: Session = Depends(get_db)):
     # Endpoint para deletar um arquivo pelo ID
     try:
@@ -71,7 +63,7 @@ def delete_file(file_id: str, db: Session = Depends(get_db)):
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Erro ao deletar o arquivo: {str(e)}")
 
-@FileUpload.get("/")
+@File.get("/")
 def get_all_files(db: Session = Depends(get_db)):
     # Endpoint para obter todos os arquivos
     try:

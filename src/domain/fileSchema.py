@@ -1,15 +1,15 @@
 from pydantic import BaseModel
 
-class FileUploadBase(BaseModel):
+class FileBase(BaseModel):
     filename: str  # Nome do arquivo
     content_type: str 
     content: bytes  # Conteúdo do arquivo de transcrição
 
 
-class FileUploadCreate(FileUploadBase):
+class FileCreate(FileBase):
     pass
 
-class FileUploadResponse(FileUploadBase):
+class FileResponse(FileBase):
     id: str        # ID do arquivo (UUID)
     uploaded_at: str  # Data de upload
 

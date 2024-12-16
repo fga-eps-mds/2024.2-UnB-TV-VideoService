@@ -2,7 +2,7 @@ import uuid
 from sqlalchemy import Column, Integer, String, Text
 from database import Base  # Assumindo que sua conexão ao banco é configurada em 'database.py'
 
-class FileUpload(Base):
+class File(Base):
     __tablename__ = "file_uploads"
 
     id = Column(String, primary_key=True, index=True, default=lambda: str(uuid.uuid4()))  # UUID como ID
